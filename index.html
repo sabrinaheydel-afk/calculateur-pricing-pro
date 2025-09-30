@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Pricing Pro - Mon Business Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #F5F1E8 0%, #FFFFFF 100%);
+            color: #2C2C2C;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #4A4A8A;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .method-explanation {
+            background: linear-gradient(135deg, #4A4A8A, #8B5FBF);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .method-explanation h2 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+        
+        .calculator-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #4A4A8A;
+        }
+        
+        .step h3 {
+            color: #4A4A8A;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .step-number {
+            background: #4A4A8A;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2C2C2C;
+        }
+        
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #4A4A8A;
+            outline: none;
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(135deg, #4A4A8A, #8B5FBF);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .results {
+            background: linear-gradient(135deg, #FF6B35, #FF8C42);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .price-range {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .price-breakdown {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .breakdown-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .tips {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .tips h3 {
+            color: #4A4A8A;
+            margin-bottom: 15px;
+        }
+        
+        .tip {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #4A4A8A;
+        }
+        
+        @media (max-width: 600px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 CALCULATEUR PRICING PRO</h1>
+            <p>Fixez vos tarifs de manière stratégique et défendable</p>
+        </div>
+        
+        <div class="method-explanation">
+            <h2>Pricing basé sur 3 piliers : vos coûts, la valeur client et la réalité marché - fini les prix au hasard !</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <span>✅</span>
+                    <span>Couvre vos frais + bénéfice</span>
+                </div>
+                <div class="benefit">
+                    <span>✅</span>
+                    <span>Reflète la valeur que vous apportez</span>
+                </div>
+                <div class="benefit">
+                    <span>✅</span>
+                    <span>Reste compétitif sur le marché</span>
+                </div>
+                <div class="benefit">
+                    <span>✅</span>
+                    <span>Vous donne des arguments de vente</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="calculator-form">
+            <div class="step">
+                <h3>
+                    <span class="step-number">1</span>
+                    PILIER 1 : Vos coûts réels
+                </h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="fixedCosts">Charges fixes mensuelles (€)</label>
+                        <input type="number" id="fixedCosts" placeholder="1200" />
+                    </div>
+                    <div class="input-group">
+                        <label for="desiredSalary">Salaire souhaité mensuel (€)</label>
+                        <input type="number" id="desiredSalary" placeholder="3000" />
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="workingDays">Jours travaillés par mois</label>
+                        <input type="number" id="workingDays" placeholder="20" />
+                    </div>
+                    <div class="input-group">
+                        <label for="hoursPerDay">Heures productives par jour</label>
+                        <input type="number" id="hoursPerDay" placeholder="6" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>
+                    <span class="step-number">2</span>
+                    PILIER 2 : Valeur créée pour le client
+                </h3>
+                <div class="input-group">
+                    <label for="clientROI">ROI que vous générez pour le client (€)</label>
+                    <input type="number" id="clientROI" placeholder="10000" />
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="projectDuration">Durée du projet (heures)</label>
+                        <input type="number" id="projectDuration" placeholder="20" />
+                    </div>
+                    <div class="input-group">
+                        <label for="valueMultiplier">Votre expertise niveau</label>
+                        <select id="valueMultiplier">
+                            <option value="0.02">Débutant (2% du ROI client)</option>
+                            <option value="0.05">Intermédiaire (5% du ROI client)</option>
+                            <option value="0.08" selected>Expert (8% du ROI client)</option>
+                            <option value="0.12">Authority (12% du ROI client)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>
+                    <span class="step-number">3</span>
+                    PILIER 3 : Réalité marché
+                </h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="competitorLow">Concurrence prix bas (€)</label>
+                        <input type="number" id="competitorLow" placeholder="500" />
+                    </div>
+                    <div class="input-group">
+                        <label for="competitorHigh">Concurrence prix haut (€)</label>
+                        <input type="number" id="competitorHigh" placeholder="2000" />
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="positioning">Votre positionnement souhaité</label>
+                    <select id="positioning">
+                        <option value="0.3">Budget (30% de la fourchette)</option>
+                        <option value="0.5">Milieu de gamme (50% de la fourchette)</option>
+                        <option value="0.7" selected>Premium (70% de la fourchette)</option>
+                        <option value="0.9">Luxury (90% de la fourchette)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="calculate-btn" onclick="calculatePricing()">
+                🚀 CALCULER MON PRIX OPTIMAL
+            </button>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>🎯 VOTRE PRIX RECOMMANDÉ</h2>
+            <div class="price-range" id="finalPrice"></div>
+            <p id="priceJustification"></p>
+            
+            <div class="price-breakdown">
+                <h3>📊 Détail du calcul :</h3>
+                <div class="breakdown-item">
+                    <span>Coût horaire minimum :</span>
+                    <span id="minHourlyRate"></span>
+                </div>
+                <div class="breakdown-item">
+                    <span>Prix basé valeur :</span>
+                    <span id="valueBasedPrice"></span>
+                </div>
+                <div class="breakdown-item">
+                    <span>Positionnement marché :</span>
+                    <span id="marketPosition"></span>
+                </div>
+                <div class="breakdown-item">
+                    <span>PRIX OPTIMAL FINAL :</span>
+                    <span id="finalBreakdown"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tips">
+            <h3>💡 Conseils pour défendre ce prix :</h3>
+            <div class="tip">
+                <strong>Argument valeur :</strong> "Mon intervention vous génère X€ de ROI, mon tarif ne représente que Y% de ce bénéfice."
+            </div>
+            <div class="tip">
+                <strong>Argument expertise :</strong> "Mes X années d'expérience permettent de livrer en Z heures ce qui prendrait plus de temps ailleurs."
+            </div>
+            <div class="tip">
+                <strong>Argument résultats :</strong> "Mes derniers clients ont obtenu en moyenne X% d'amélioration de leurs résultats."
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculatePricing() {
+            // Récupération des valeurs
+            const fixedCosts = parseFloat(document.getElementById('fixedCosts').value) || 0;
+            const desiredSalary = parseFloat(document.getElementById('desiredSalary').value) || 0;
+            const workingDays = parseFloat(document.getElementById('workingDays').value) || 20;
+            const hoursPerDay = parseFloat(document.getElementById('hoursPerDay').value) || 6;
+            
+            const clientROI = parseFloat(document.getElementById('clientROI').value) || 0;
+            const projectDuration = parseFloat(document.getElementById('projectDuration').value) || 1;
+            const valueMultiplier = parseFloat(document.getElementById('valueMultiplier').value) || 0.05;
+            
+            const competitorLow = parseFloat(document.getElementById('competitorLow').value) || 0;
+            const competitorHigh = parseFloat(document.getElementById('competitorHigh').value) || 0;
+            const positioning = parseFloat(document.getElementById('positioning').value) || 0.5;
+            
+            // CALCULS
+            
+            // 1. Coût horaire minimum
+            const totalMonthlyCosts = fixedCosts + desiredSalary;
+            const totalHoursPerMonth = workingDays * hoursPerDay;
+            const minHourlyRate = totalMonthlyCosts / totalHoursPerMonth;
+            const minProjectPrice = minHourlyRate * projectDuration;
+            
+            // 2. Prix basé sur la valeur
+            const valueBasedPrice = clientROI * valueMultiplier;
+            
+            // 3. Positionnement marché
+            const marketRange = competitorHigh - competitorLow;
+            const marketPosition = competitorLow + (marketRange * positioning);
+            
+            // 4. Prix final = moyenne pondérée avec priorité sur la valeur
+            let finalPrice;
+            const prices = [minProjectPrice, valueBasedPrice, marketPosition];
+            const validPrices = prices.filter(price => price > 0);
+            
+            if (validPrices.length > 0) {
+                // Pondération : 30% coûts, 50% valeur, 20% marché
+                finalPrice = (minProjectPrice * 0.3) + (valueBasedPrice * 0.5) + (marketPosition * 0.2);
+                
+                // Seuil minimum = coûts
+                finalPrice = Math.max(finalPrice, minProjectPrice);
+            } else {
+                finalPrice = minProjectPrice;
+            }
+            
+            // Affichage des résultats
+            document.getElementById('finalPrice').textContent = Math.round(finalPrice) + '€';
+            
+            document.getElementById('minHourlyRate').textContent = Math.round(minHourlyRate) + '€/h (' + Math.round(minProjectPrice) + '€ total)';
+            document.getElementById('valueBasedPrice').textContent = Math.round(valueBasedPrice) + '€';
+            document.getElementById('marketPosition').textContent = Math.round(marketPosition) + '€';
+            document.getElementById('finalBreakdown').textContent = Math.round(finalPrice) + '€';
+            
+            // Message de justification
+            let justification = '';
+            if (finalPrice <= minProjectPrice * 1.1) {
+                justification = 'Prix basé prioritairement sur vos coûts - assurez-vous de bien communiquer votre valeur ajoutée.';
+            } else if (finalPrice >= valueBasedPrice * 0.9) {
+                justification = 'Excellent ! Votre prix reflète la valeur que vous apportez au client.';
+            } else {
+                justification = 'Prix équilibré entre vos coûts, la valeur créée et le marché - parfait pour débuter.';
+            }
+            
+            document.getElementById('priceJustification').textContent = justification;
+            
+            // Afficher les résultats
+            document.getElementById('results').classList.add('show');
+            
+            // Scroll vers les résultats
+            document.getElementById('results').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+        
+        // Validation des champs en temps réel
+        const inputs = document.querySelectorAll('input[type="number"]');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value < 0) {
+                    this.value = 0;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
